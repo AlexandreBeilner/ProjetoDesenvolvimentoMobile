@@ -25,6 +25,8 @@ export default function AuthForm({
   return (
     <View style={styles.root}>
       <View>
+        
+
         <LabeledInput
           label="Email"
           placeholder="seu@email.com"

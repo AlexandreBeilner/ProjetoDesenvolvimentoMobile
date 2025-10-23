@@ -8,10 +8,11 @@ import AppText from '../components/atoms/AppText';
 import AuthForm from '../components/organisms/AuthForm';
 import { spacing } from '../theme/spacing';
 
+
 type Props = NativeStackScreenProps<RootStackParamList, 'Register'>;
 
 export default function RegisterScreen({ navigation }: Props) {
-  function onRegister(data: { email: string; password: string }) {
+  function onRegister(data: {nome:string; email: string; password: string }) {
     console.log('register:', data);
     navigation.navigate('Login');
   }
