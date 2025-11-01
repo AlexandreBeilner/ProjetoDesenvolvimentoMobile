@@ -13,9 +13,10 @@ import { spacing } from '../../theme/spacing';
 
 interface Props {
   children: ReactNode;
+  paddingBottom?: number;
 }
 
-export default function Screen({ children }: Props) {
+export default function Screen({ children, paddingBottom }: Props) {
   const insets = useSafeAreaInsets();
 
   return (
@@ -30,7 +31,7 @@ export default function Screen({ children }: Props) {
           styles.content,
           {
             paddingTop: spacing['3xl'] + insets.top,
-            paddingBottom: spacing['2xl'] + insets.bottom,
+            paddingBottom: paddingBottom ?? spacing['2xl'] + insets.bottom,
           },
         ]}
       >

@@ -47,12 +47,6 @@ export default function WelcomeScreen({ navigation }: Props) {
           onPress={() => navigation.navigate('Register')}
         />
       </View>
-      <View style={{ height: spacing.md }} />
-        <AppButton
-          title="Criar produto"
-          variant="secondary"
-          onPress={() => navigation.navigate('Product')}
-        />
       </View>
   );
 }

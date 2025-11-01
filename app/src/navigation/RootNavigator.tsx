@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import WelcomeScreen from '../screens/WelcomeScreen';
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
-import RegisterProduct from '../screens/RegisterProduct';
+import RegisterProduct from '../screens/RegisterProductScreen';
 import { enableScreens } from 'react-native-screens';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ProductsListScreen from '../screens/ProductsListScreen.tsx';
@@ -11,6 +11,7 @@ import LocalsListScreen from '../screens/LocalsListScreen.tsx';
 import { AppIcon } from '../components/atoms/AppIcon.tsx';
 import { MaterialDesignIconsIconName } from '@react-native-vector-icons/material-design-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 enableScreens(true);
 
@@ -19,12 +20,16 @@ export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
   Feed: undefined;
-  Product: undefined;
 };
 
 export type TabParamList = {
   ProductList: undefined;
   LocalList: undefined;
+};
+
+export type ProductStackParamList = {
+  ProductList: undefined;
+  RegisterProduct: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -38,7 +43,6 @@ export default function RootNavigator() {
       <Stack.Screen name="Welcome" component={WelcomeScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
-      <Stack.Screen name="Product" component={RegisterProduct} />
       <Stack.Screen name="Feed" component={TabNavigation} />
     </Stack.Navigator>
   );
@@ -51,55 +55,54 @@ function TabNavigation() {
 
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
-        headerShown: false,
+      screenOptions={({ route }) => {
+        const rn = getFocusedRouteNameFromRoute(route) ?? '';
+        const hideOn = ['RegisterProduct'];
+        const hide = hideOn.includes(rn);
 
-        tabBarLabelPosition: 'beside-icon',
-        tabBarItemStyle: { flexDirection: 'row' },
-        tabBarIconStyle: { marginRight: 8 },
-        tabBarShowLabel: true,
-        tabBarActiveTintColor: '#a337a6',
-        tabBarInactiveTintColor: '#000000',
+        return {
+          headerShown: false,
 
-        tabBarStyle: {
-          height: 50 + insets.bottom,
-          backgroundColor: '#ffffff',
-          borderTopWidth: 1,
-          borderTopColor: '#000000',
-        },
+          tabBarLabelPosition: 'beside-icon',
+          tabBarItemStyle: { flexDirection: 'row' },
+          tabBarIconStyle: { marginRight: 8 },
+          tabBarShowLabel: true,
+          tabBarActiveTintColor: '#a337a6',
+          tabBarInactiveTintColor: '#000000',
 
-        tabBarLabelStyle: {
-          fontSize: 14,
-          fontWeight: '600',
-        },
+          tabBarStyle: hide? {display: 'none'} :{
+            height: 50 + insets.bottom,
+            backgroundColor: '#ffffff',
+            borderTopWidth: 1,
+            borderTopColor: '#000000',
+          },
 
-        tabBarLabel:
-          route.name === 'ProductList' ? 'Produtos' : 'Locais',
+          tabBarLabelStyle: {
+            fontSize: 14,
+            fontWeight: '600',
+          },
 
-        tabBarIcon: ({ focused, color, size }) => {
-          let iconName: MaterialDesignIconsIconName;
+          tabBarLabel: route.name === 'ProductList' ? 'Produtos' : 'Locais',
 
-          if (route.name === 'ProductList') {
-            iconName = focused ? 'tag' : 'tag-outline';
-          } else {
-            iconName = focused ? 'storefront' : 'storefront-outline';
-          }
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName: MaterialDesignIconsIconName;
 
-          return (
-            <AppIcon
-              name={iconName}
-              size={size}
-              color={color}
-            />
-          );
-        },
+            if (route.name === 'ProductList') {
+              iconName = focused ? 'tag' : 'tag-outline';
+            } else {
+              iconName = focused ? 'storefront' : 'storefront-outline';
+            }
 
-        tabBarHideOnKeyboard: true,
-      })}
+            return <AppIcon name={iconName} size={size} color={color} />;
+          },
+
+          tabBarHideOnKeyboard: true,
+        };
+      }}
     >
       <Tab.Screen
         name="ProductList"
-        component={ProductsListScreen}
+        component={ProductsStackNavigator}
         options={{
           title: 'Produtos',
         }}
@@ -113,5 +116,18 @@ function TabNavigation() {
         }}
       />
     </Tab.Navigator>
+  );
+}
+
+const ProductsStack = createNativeStackNavigator<ProductStackParamList>();
+function ProductsStackNavigator() {
+  return (
+    <ProductsStack.Navigator
+      initialRouteName="ProductList"
+      screenOptions={{ headerShown: false, animation: 'fade' }}
+    >
+      <ProductsStack.Screen name="ProductList" component={ProductsListScreen} />
+      <ProductsStack.Screen name="RegisterProduct" component={RegisterProduct} />
+    </ProductsStack.Navigator>
   );
 }

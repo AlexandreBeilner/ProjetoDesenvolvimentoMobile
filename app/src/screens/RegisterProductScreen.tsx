@@ -1,14 +1,16 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../navigation/RootNavigator';
+import {
+  ProductStackParamList,
+} from '../navigation/RootNavigator';
 import Screen from '../components/templates/Screen';
 import AppText from '../components/atoms/AppText';
 import Upload from '../components/atoms/upload';
 import { spacing } from '../theme/spacing';
 import RegisterProductForm from '../components/organisms/RegisterProductForm.tsx';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Product'>;
+type Props = NativeStackScreenProps<ProductStackParamList, 'RegisterProduct'>;
 
 export default function Product({ navigation }: Props) {
   function onRegisterProduct(data: {
@@ -17,7 +19,7 @@ export default function Product({ navigation }: Props) {
     price: string;
   }) {
     console.log('Product:', data);
-    navigation.navigate('Login');
+    // navigation.navigate('Login');
   }
 
   return (
