@@ -5,16 +5,17 @@ import { RootStackParamList } from '../navigation/RootNavigator';
 import Screen from '../components/templates/Screen';
 import AppText from '../components/atoms/AppText';
 import Upload from '../components/atoms/upload';
-import AuthForm from '../components/organisms/AuthForm';
 import { spacing } from '../theme/spacing';
-import LabeledInput from '../components/molecules/LabeledInput';
-import { Image } from 'react-native/types_generated/index';
-import AppButton from '../components/atoms/AppButton';
+import RegisterProductForm from '../components/organisms/RegisterProductForm.tsx';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Product'>;
 
 export default function Product({ navigation }: Props) {
-  function onProduct(data: { NameProduct: string; password: string }) {
+  function onRegisterProduct(data: {
+    title: string;
+    description: string;
+    price: string;
+  }) {
     console.log('Product:', data);
     navigation.navigate('Login');
   }
@@ -23,38 +24,16 @@ export default function Product({ navigation }: Props) {
     <Screen>
       {/* Header */}
       <View style={styles.header}>
-        <AppText variant="h1" align="center">CADASTRO DE PRODUTO</AppText>
+        <AppText variant="h1" align="center">
+          CADASTRO DE PRODUTO
+        </AppText>
         <Upload />
         <View style={{ height: spacing.lg }} />
       </View>
 
       {/* Form */}
       <View style={styles.form}>
-        <View>
-        <AppText variant="h3" align="center">Adicione uma imagem</AppText>
-        <LabeledInput
-                  label="Titulo"
-                  placeholder="Nome Produto"
-                  value={''}
-                  onChangeText={''}
-                  keyboardType="name-product"
-                />
-        <LabeledInput
-                  label="Descrição"
-                  placeholder="Descrição do produto"
-                  value={''}
-                  onChangeText={''}
-                  keyboardType="description-product"
-                />
-        <LabeledInput
-                  label="Preço"
-                  placeholder="R$"
-                  value={''}
-                  onChangeText={''}
-                  keyboardType="price-product"
-                />
-         <AppButton title='Cadastrar produto' />
-        </View>
+        <RegisterProductForm onSubmit={onRegisterProduct} />
       </View>
     </Screen>
   );

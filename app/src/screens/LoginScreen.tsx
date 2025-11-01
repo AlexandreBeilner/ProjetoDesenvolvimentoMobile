@@ -13,7 +13,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 export default function LoginScreen({ navigation }: Props) {
   function onLogin(data: { email: string; password: string }) {
     console.log('login:', data);
-    // navigation.replace('Home');
+    navigation.replace('Feed');
   }
 
   return (

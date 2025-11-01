@@ -5,14 +5,14 @@ import { RootStackParamList } from '../navigation/RootNavigator';
 import Screen from '../components/templates/Screen';
 import Logo from '../components/atoms/Logo';
 import AppText from '../components/atoms/AppText';
-import AuthForm from '../components/organisms/AuthForm';
 import { spacing } from '../theme/spacing';
+import RegisterForm from '../components/organisms/RegisterForm.tsx';
 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Register'>;
 
 export default function RegisterScreen({ navigation }: Props) {
-  function onRegister(data: {nome:string; email: string; password: string }) {
+  function onRegister(data: {name:string; email: string; password: string }) {
     console.log('register:', data);
     navigation.navigate('Login');
   }
@@ -28,7 +28,7 @@ export default function RegisterScreen({ navigation }: Props) {
 
       {/* Form */}
       <View style={styles.form}>
-        <AuthForm onSubmit={onRegister} submitText="Criar conta" variant="purple" />
+        <RegisterForm onSubmit={onRegister} submitText="Criar conta" variant="purple" />
       </View>
     </Screen>
   );
