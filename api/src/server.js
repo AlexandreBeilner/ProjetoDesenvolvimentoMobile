@@ -6,10 +6,9 @@ const PORT = process.env.PORT || 3000;
 (async () => {
     try {
         await sequelize.authenticate();
-        console.log('✅ DB conectado');
-        app.listen(PORT, () => console.log(`🚀 API em http://localhost:${PORT}`));
+        app.listen(PORT, () => console.log(`API em http://localhost:${PORT}`));
     } catch (e) {
-        console.error('❌ Falha ao conectar no DB:', e.message);
+        console.error('Falha ao conectar no DB:', e.message);
         process.exit(1);
     }
 })();

@@ -1,9 +1,11 @@
 import { sequelize } from '../db.js';
 import { initUserModel } from './user.model.js';
+import { initProductModel } from './product.model.js';
 
 export const User = initUserModel(sequelize);
+export const Product = initProductModel(sequelize);
 
-// Caso tenha associações no futuro:
-// User.associate?.({ ...outrosModels });
+Product.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
+User.hasMany(Product, { foreignKey: 'user_id', as: 'products' });
 
 export { sequelize };
