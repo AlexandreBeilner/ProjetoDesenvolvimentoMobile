@@ -6,8 +6,7 @@ import Screen from '../components/templates/Screen';
 import AppText from '../components/atoms/AppText';
 import Upload from '../components/atoms/upload';
 import { spacing } from '../theme/spacing';
-import RegisterProductForm from '../components/organisms/RegisterProductForm.tsx';
-import AppButton from '../components/atoms/AppButton.tsx';
+import RegisterProductForm from '../components/organisms/RegisterProductForm.tsx'
 
 type Props = NativeStackScreenProps<ProductStackParamList, 'RegisterProduct'>;
 
@@ -26,15 +25,6 @@ export default function Product({ navigation }: Props) {
   return (
     <Screen>
       <View>
-        <AppButton
-          style={styles.backButton}
-          full={false}
-          title={'voltar'}
-          variant={'primary'}
-          onPress={() => {
-            navigation.goBack()
-          }}
-        />
         <View style={styles.headerElements}>
           <AppText variant="h1" align="center">
             CADASTRO DE PRODUTO
@@ -45,7 +35,7 @@ export default function Product({ navigation }: Props) {
       </View>
 
       <View style={styles.form}>
-        <RegisterProductForm onSubmit={onRegisterProduct} />
+        <RegisterProductForm onSubmit={onRegisterProduct} onBack={() => navigation.goBack()} />
       </View>
     </Screen>
   );

@@ -6,12 +6,14 @@ import { spacing } from '../../theme/spacing';
 
 interface Props {
   onSubmit?: (data: { title: string; description: string, price: string }) => void;
+  onBack: () => void;
   submitText?: string;
   variant?: 'purple' | 'yellow';
 }
 
 export default function RegisterProductForm({
                                    onSubmit,
+                                              onBack,
                                    submitText = 'Cadastrar produto',
                                    variant = 'purple',
                                  }: Props) {
@@ -49,15 +51,23 @@ export default function RegisterProductForm({
           secureTextEntry
         />
       </View>
-      <AppButton
-        title={submitText}
-        variant={variant === 'yellow' ? 'secondary' : 'primary'}
-        onPress={handleSubmit}
-      />
+      <View style={styles.buttonsContainer}>
+        <AppButton
+          title={submitText}
+          variant={variant === 'yellow' ? 'secondary' : 'primary'}
+          onPress={handleSubmit}
+        />
+        <AppButton
+          title={'Voltar'}
+          variant={'secondary'}
+          onPress={onBack}
+        />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   root: { width: '100%', flex: 1, justifyContent: 'space-between' },
+  buttonsContainer: { gap: spacing.md },
 });
