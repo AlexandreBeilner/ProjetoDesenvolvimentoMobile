@@ -14,9 +14,11 @@ import { spacing } from '../../theme/spacing';
 interface Props {
   children: ReactNode;
   paddingBottom?: number;
+  paddingTop?: number;
+  paddingHorizontal?: number;
 }
 
-export default function Screen({ children, paddingBottom }: Props) {
+export default function Screen({ children, paddingBottom, paddingHorizontal, paddingTop }: Props) {
   const insets = useSafeAreaInsets();
 
   return (
@@ -30,8 +32,9 @@ export default function Screen({ children, paddingBottom }: Props) {
         contentContainerStyle={[
           styles.content,
           {
-            paddingTop: spacing['3xl'] + insets.top,
-            paddingBottom: paddingBottom ?? spacing['2xl'] + insets.bottom,
+            paddingTop: Number.isInteger(paddingTop) ? Number(paddingTop) + insets.top : spacing['3xl'] + insets.top,
+            paddingHorizontal: paddingHorizontal ?? spacing.xl,
+            paddingBottom: Number.isInteger(paddingBottom) ? Number(paddingBottom) + insets.bottom : spacing['2xl'] + insets.bottom,
           },
         ]}
       >
@@ -45,7 +48,6 @@ const styles = StyleSheet.create({
   content: {
     flexGrow: 1,
     backgroundColor: colors.bg,
-    paddingHorizontal: spacing.xl,
   },
   body: {
     flex: 1,

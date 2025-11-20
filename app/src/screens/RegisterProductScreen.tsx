@@ -7,19 +7,41 @@ import AppText from '../components/atoms/AppText';
 import Upload from '../components/atoms/upload';
 import { spacing } from '../theme/spacing';
 import RegisterProductForm from '../components/organisms/RegisterProductForm.tsx'
+import { Asset } from 'react-native-image-picker';
+import { createProduct } from '../services/products.service.ts';
+import Toast from 'react-native-toast-message';
 
 type Props = NativeStackScreenProps<ProductStackParamList, 'RegisterProduct'>;
 
 export default function Product({ navigation }: Props) {
-  const [imageUri, setImageUri] = useState<string | null>(null);
+  const [image, setImage] = useState<Asset | null>(null);
 
-  function onRegisterProduct(data: {
+  async function onRegisterProduct(data: {
     title: string;
     description: string;
     price: string;
   }) {
-    const payload = { ...data, imageUri };
-    console.log('Product:', payload);
+    const payload = { ...data, image };
+    const response = await createProduct({
+      title: payload.title,
+      price: payload.price,
+      image: image?.base64 ?? '',
+      description: payload.description,
+      userId: '1'
+    })
+
+    if (response.error) {
+      Toast.show({
+        type: 'error',
+        text1: response.error
+      })
+      return;
+    }
+    Toast.show({
+      type: 'success',
+      text1: 'Produto cadastrado com sucesso!'
+    })
+    navigation.goBack();
   }
 
   return (
@@ -29,7 +51,7 @@ export default function Product({ navigation }: Props) {
           <AppText variant="h1" align="center">
             CADASTRO DE PRODUTO
           </AppText>
-          <Upload value={imageUri} onChange={setImageUri} />
+          <Upload value={image?.uri} onChange={setImage} />
           <AppText align="center">Adicione uma imagem</AppText>
         </View>
       </View>

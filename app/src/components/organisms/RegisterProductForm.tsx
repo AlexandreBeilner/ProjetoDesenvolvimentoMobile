@@ -48,7 +48,7 @@ export default function RegisterProductForm({
           placeholder="R$"
           value={price}
           onChangeText={setPrice}
-          secureTextEntry
+          keyboardType={'numeric'}
         />
       </View>
       <View style={styles.buttonsContainer}>

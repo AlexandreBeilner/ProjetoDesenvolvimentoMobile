@@ -12,7 +12,7 @@ const CARD_W = Math.floor(AVAIL / 2); // show 2 cards per viewport
 export type Product = {
     id: string;
     title: string;
-    subtitle: string;
+    description: string;
     price: string;
     image: string;
 };
@@ -22,10 +22,9 @@ type Props = { data: Product; onPress?: () => void };
 function Card({ data, onPress }: Props) {
     return (
         <Pressable onPress={onPress} style={s.card}>
-            <Image source={{ uri: data.image }} style={s.image} resizeMode="cover" />
+            <Image source={{ uri: `data:image/jpeg;base64,${data.image}` }} style={s.image} resizeMode="cover" />
             <View style={s.body}>
                 <AppText numberOfLines={1} variant="small">{data.title}</AppText>
-                <AppText numberOfLines={1} color="muted" variant="small">{data.subtitle}</AppText>
                 <AppText style={s.price}>{data.price}</AppText>
             </View>
         </Pressable>
@@ -45,6 +44,6 @@ const s = StyleSheet.create({
         overflow: 'hidden',
     },
     image: { width: '100%', height: Math.round(CARD_W * 0.62) },
-    body: { padding: spacing.sm },
+    body: { padding: spacing.sm, gap: spacing.sm },
     price: { marginTop: 4, fontWeight: '700', color: '#6A1B9A' },
 });

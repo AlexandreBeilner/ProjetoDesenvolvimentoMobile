@@ -12,6 +12,8 @@ import { AppIcon } from '../components/atoms/AppIcon.tsx';
 import { MaterialDesignIconsIconName } from '@react-native-vector-icons/material-design-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import ProductDetailsScreen from '../screens/ProductDetailsScreen.tsx';
+import { Product } from '../components/molecules/ProductCard.tsx';
 
 enableScreens(true);
 
@@ -30,6 +32,7 @@ export type TabParamList = {
 export type ProductStackParamList = {
   ProductList: undefined;
   RegisterProduct: undefined;
+  ProductDetails: {product: Product};
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -57,7 +60,7 @@ function TabNavigation() {
     <Tab.Navigator
       screenOptions={({ route }) => {
         const rn = getFocusedRouteNameFromRoute(route) ?? '';
-        const hideOn = ['RegisterProduct'];
+        const hideOn = ['RegisterProduct', 'ProductDetails'];
         const hide = hideOn.includes(rn);
 
         return {
@@ -128,6 +131,7 @@ function ProductsStackNavigator() {
     >
       <ProductsStack.Screen name="ProductList" component={ProductsListScreen} />
       <ProductsStack.Screen name="RegisterProduct" component={RegisterProduct} />
+      <ProductsStack.Screen name="ProductDetails" component={ProductDetailsScreen} />
     </ProductsStack.Navigator>
   );
 }

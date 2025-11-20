@@ -16,45 +16,44 @@ type Props = NativeStackScreenProps<ProductStackParamList, 'ProductList'>;
 
 type Restaurant = { id: string; name: string; products: Product[] };
 
-const DATA: Restaurant[] = [
-  {
-    id: 'abc',
-    name: 'Restaurante ABC',
-    products: [
-      { id: 'p1', title: 'Hamburguer', subtitle: 'Tradicional', price: 'R$ 16,00', image: 'https://images.unsplash.com/photo-1550547660-d9450f859349?w=800' },
-      { id: 'p2', title: 'Pastel de carne', subtitle: 'Crocante', price: 'R$ 12,00', image: 'https://images.unsplash.com/photo-1604908813115-ef7a59b2e2f0?w=800' },
-      { id: 'p3', title: 'Batata', subtitle: 'Cheddar', price: 'R$ 10,00', image: 'https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?w=800' },
-    ],
-  },
-  {
-    id: 'xyz',
-    name: 'Restaurante XYZ',
-    products: [
-      { id: 'p4', title: 'Hamburguer', subtitle: 'Tradicional', price: 'R$ 16,00', image: 'https://images.unsplash.com/photo-1550547660-d9450f859349?w=800' },
-      { id: 'p5', title: 'Pastel de carne', subtitle: 'Artesanal', price: 'R$ 13,00', image: 'https://images.unsplash.com/photo-1604908813115-ef7a59b2e2f0?w=800' },
-      { id: 'p6', title: 'Açaí', subtitle: '300ml', price: 'R$ 14,00', image: 'https://images.unsplash.com/photo-1615485737652-6f4e22b9d1e2?w=800' },
-    ],
-  },
-];
-
 export default function ProductsListScreen({ navigation }: Props) {
   const [query, setQuery] = useState('');
+  const [restaurantProducts, setRestaurantProducts] = useState<Restaurant[]>([]);
+
   const list = useMemo(() => {
-    if (!query.trim()) return DATA;
+    if (!query.trim()) return restaurantProducts;
     const t = query.toLowerCase();
-    return DATA.map(r => ({
+    return restaurantProducts.map(r => ({
       ...r,
       products: r.products.filter(p =>
-        p.title.toLowerCase().includes(t) || p.subtitle.toLowerCase().includes(t),
+        p.title.toLowerCase().includes(t),
       ),
     })).filter(r => r.products.length);
-  }, [query]);
+  }, [query, restaurantProducts]);
 
   useEffect(() => {
-    getProducts().then(result => {
-      console.log('Fetched products:', result);
+    getProducts().then((result = {}) => {
+      const products: Restaurant[] = [];
+      Object.entries(result).forEach(([key, value]: [string, any]) => {
+        products.push({
+          id: key,
+          name: value.title,
+          products: value.products.map((product: any) => ({
+            id: product.id,
+            title: product.title,
+            price: `R$ ${product.price}`,
+            image: product.image,
+            description: product.description
+          })),
+        })
+      })
+      setRestaurantProducts(products);
     })
   }, [])
+
+  const onSelectProduct = (product: Product) => {
+    navigation.navigate('ProductDetails', { product });
+  }
 
 
   return (
@@ -84,7 +83,7 @@ export default function ProductsListScreen({ navigation }: Props) {
               initialNumToRender={4}
               windowSize={5}
               removeClippedSubviews
-              renderItem={({ item: p }) => <ProductCard data={p} />}
+              renderItem={({ item: p }) => <ProductCard data={p} onPress={() => onSelectProduct(p)} />}
             />
           </View>
         )}

@@ -11,7 +11,7 @@ interface Props {
   value: string;
   onChangeText: (t: string) => void;
   secureTextEntry?: boolean;
-  keyboardType?: 'default' | 'email-address';
+  keyboardType?: 'default' | 'email-address' | 'numeric' | 'phone-pad';
 }
 
 export default function LabeledInput({

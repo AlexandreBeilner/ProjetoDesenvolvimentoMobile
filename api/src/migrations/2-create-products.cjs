@@ -7,7 +7,7 @@ module.exports = {
             title: { type: Sequelize.STRING(140), allowNull: false },
             description: { type: Sequelize.TEXT, allowNull: true },
             price: { type: Sequelize.DECIMAL(10, 2), allowNull: false },
-            image_url: { type: Sequelize.TEXT, allowNull: true },
+            image: { type: Sequelize.TEXT('long'), allowNull: true },
 
             user_id: {
                 type: Sequelize.INTEGER,

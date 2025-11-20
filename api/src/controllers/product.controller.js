@@ -1,34 +1,24 @@
 import { Product, User } from '../models/index.js';
 
-function parsePrice(v) {
-    if (typeof v === 'number') return v;
-    if (typeof v === 'string') {
-        const norm = v.replace(/[^\d,.-]/g, '').replace(/\.(?=\d{3}\b)/g, '').replace(',', '.');
-        return Number(norm);
-    }
-    return NaN;
-}
-
 /**
  * POST /api/products
  * { title, description?, price, imageUri?, userId }
  */
 export async function createProduct(req, res, next) {
     try {
-        const { title, description, price, imageUri, userId } = req.body;
-        if (!title || userId == null) return res.status(400).json({ error: 'title and userId are required' });
+        const { title, description, price, image, userId } = req.body;
+        if (!title || userId == null) return res.status(400).json({ error: 'Titulo é obrigatório' });
 
         const user = await User.findByPk(userId);
-        if (!user) return res.status(404).json({ error: 'user not found' });
+        if (!user) return res.status(404).json({ error: 'Usuário não encontrado' });
 
-        const priceNumber = parsePrice(price);
-        if (Number.isNaN(priceNumber)) return res.status(400).json({ error: 'invalid price' });
+        if (!price || Number.isNaN(price)) return res.status(400).json({ error: 'O preço é invalido' });
 
         const product = await Product.create({
             title,
             description: description ?? null,
-            price: priceNumber,
-            imageUrl: imageUri ?? null,
+            price: Number(price),
+            image: image ?? null,
             userId,
         });
 
@@ -36,6 +26,35 @@ export async function createProduct(req, res, next) {
     } catch (e) {
         next(e);
     }
+}
+
+export async function getProductsToList(req, res) {
+    const [rows] = await Product.sequelize.query(
+        `
+        SELECT products.*, u.id as userId, u.title as userTitle
+        FROM products
+        LEFT JOIN users u ON products.user_id = u.id
+        ORDER BY products.id DESC
+        `
+    )
+
+    const response = rows.reduce((previousValue, currentValue) => {
+        if (!previousValue[currentValue.user_id]) {
+            previousValue[currentValue.user_id] = {
+                title: currentValue.usertitle,
+                products: []
+            }
+        }
+
+        previousValue[currentValue.user_id].products = [
+            ...previousValue[currentValue.user_id].products,
+            currentValue
+        ];
+
+        return previousValue;
+    }, {});
+
+    return res.json(response);
 }
 
 /** GET /api/products?userId=&page=&limit= */

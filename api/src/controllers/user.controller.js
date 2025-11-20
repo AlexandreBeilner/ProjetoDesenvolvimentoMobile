@@ -21,22 +21,21 @@ export async function listUsers(req, res, next) {
 
 /**
  * POST /api/users
- * { name, email, password, userType?, title?, description?, rating?, imageUri? }
+ * { name, email, password, userType?, title?, description?, rating?, image? }
  */
 export async function createUser(req, res, next) {
   try {
-    const { name, email, password, userType, title, description, rating, imageUri } = req.body;
+    const { name, email, password, userType, title, description, rating, image } = req.body ?? {};
     
     if (!name || !email || !password) {
-      return res.status(400).json({ error: 'name, email and password are required' });
+      return res.status(400).json({ error: 'Nome, email e senha são obrigatorios, verifique os dados e tente novamente' });
     }
-    
 
     const validUserType = ['consumer', 'location'].includes(userType) ? userType : 'consumer';
     
 
     if (validUserType === 'location' && !title) {
-      return res.status(400).json({ error: 'title is required for location type users' });
+      return res.status(400).json({ error: 'Titulo é obrigatorio para localizações' });
     }
 
     const passwordHash = crypto.createHash('sha256').update(String(password)).digest('hex');
@@ -49,7 +48,7 @@ export async function createUser(req, res, next) {
       title: title ?? null,
       description: description ?? null,
       rating: rating ?? null,
-      imageUrl: imageUri ?? null,
+      image: image ?? null,
     });
     
     res.status(201).json({ 
