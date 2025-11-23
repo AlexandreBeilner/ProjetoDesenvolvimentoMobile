@@ -14,6 +14,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import ProductDetailsScreen from '../screens/ProductDetailsScreen.tsx';
 import { Product } from '../components/molecules/ProductCard.tsx';
+import LocationDetailsScreen from '../screens/LocationDetailsScreen';
+
 
 enableScreens(true);
 
@@ -22,7 +24,9 @@ export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
   Feed: undefined;
+  LocationDetails: { userData: any };
 };
+
 
 export type TabParamList = {
   ProductList: undefined;
@@ -47,6 +51,7 @@ export default function RootNavigator() {
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
       <Stack.Screen name="Feed" component={TabNavigation} />
+      <Stack.Screen name="LocationDetails" component={LocationDetailsScreen} />
     </Stack.Navigator>
   );
 }
@@ -110,6 +115,7 @@ function TabNavigation() {
           title: 'Produtos',
         }}
       />
+
 
       <Tab.Screen
         name="LocalList"
