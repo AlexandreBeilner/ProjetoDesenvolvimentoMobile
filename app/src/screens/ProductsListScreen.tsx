@@ -20,6 +20,7 @@ type Restaurant = { id: string; name: string; products: Product[] };
 export default function ProductsListScreen({ navigation }: Props) {
   const [query, setQuery] = useState('');
   const [restaurantProducts, setRestaurantProducts] = useState<Restaurant[]>([]);
+  const [refreshFlag, setRefreshFlag] = useState(true);
   const { user } = useAuth();
   const isLocation = user?.userType === 'location';
 
@@ -35,24 +36,27 @@ export default function ProductsListScreen({ navigation }: Props) {
   }, [query, restaurantProducts]);
 
   useEffect(() => {
-    getProducts().then((result = {}) => {
-      const products: Restaurant[] = [];
-      Object.entries(result).forEach(([key, value]: [string, any]) => {
-        products.push({
-          id: key,
-          name: value.title,
-          products: value.products.map((product: any) => ({
-            id: product.id,
-            title: product.title,
-            price: `R$ ${product.price}`,
-            image: product.image,
-            description: product.description
-          })),
+    if (refreshFlag) {
+      getProducts().then((result = {}) => {
+        const products: Restaurant[] = [];
+        Object.entries(result).forEach(([key, value]: [string, any]) => {
+          products.push({
+            id: key,
+            name: value.title,
+            products: value.products.map((product: any) => ({
+              id: product.id,
+              title: product.title,
+              price: `R$ ${product.price}`,
+              image: product.image,
+              description: product.description
+            })),
+          })
         })
+        setRestaurantProducts(products);
       })
-      setRestaurantProducts(products);
-    })
-  }, [])
+      setRefreshFlag(false);
+    }
+  }, [refreshFlag])
 
   const onSelectProduct = (product: Product) => {
     navigation.navigate('ProductDetails', { product });
@@ -62,6 +66,10 @@ export default function ProductsListScreen({ navigation }: Props) {
   return (
     <SafeAreaView style={s.safe}>
       <FlatList
+        refreshing={refreshFlag}
+        onRefresh={() => {
+          setRefreshFlag(true)
+        }}
         data={list}
         keyExtractor={(r) => r.id}
         showsVerticalScrollIndicator={false}

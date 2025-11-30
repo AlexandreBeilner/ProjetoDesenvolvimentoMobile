@@ -10,11 +10,13 @@ import RegisterProductForm from '../components/organisms/RegisterProductForm.tsx
 import { Asset } from 'react-native-image-picker';
 import { createProduct } from '../services/products.service.ts';
 import Toast from 'react-native-toast-message';
+import { useAuth } from '../context/AuthContext.tsx';
 
 type Props = NativeStackScreenProps<ProductStackParamList, 'RegisterProduct'>;
 
 export default function Product({ navigation }: Props) {
   const [image, setImage] = useState<Asset | null>(null);
+  const user = useAuth();
 
   async function onRegisterProduct(data: {
     title: string;
@@ -27,7 +29,7 @@ export default function Product({ navigation }: Props) {
       price: payload.price,
       image: image?.base64 ?? '',
       description: payload.description,
-      userId: '1'
+      userId: String(user.user?.id) || '1'
     })
 
     if (response.error) {

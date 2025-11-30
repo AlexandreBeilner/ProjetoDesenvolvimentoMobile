@@ -39,7 +39,7 @@ export default function ProductDetailsScreen({ navigation, route }: Props) {
         </View>
         <View style={s.priceContainer}>
           <AppText style={[s.amountText, {color: colors.white}]}>
-            Total   R$ {price * count}
+            Pagar   R$ {price * count}
           </AppText>
         </View>
       </View>

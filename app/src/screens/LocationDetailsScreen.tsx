@@ -7,6 +7,7 @@ import AppButton from '../components/atoms/AppButton';
 import { spacing } from '../theme/spacing';
 import { registerUser } from '../services/users.service';
 import { launchImageLibrary } from 'react-native-image-picker';
+import Screen from '../components/templates/Screen.tsx';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'LocationDetails'>;
 
@@ -52,22 +53,24 @@ export default function LocationDetailsScreen({ route, navigation }: Props) {
   }
 
   return (
-    <View style={styles.container}>
+    <Screen>
 
-      <Text style={styles.title}>CADASTRO DE ESTABELECIMENTO</Text>
+      <View style={styles.container}>
+        <Text style={styles.title}>CADASTRO DE ESTABELECIMENTO</Text>
 
-      <TouchableOpacity style={styles.uploadCircle} onPress={pickImage}>
-        {image ? (
-          <Image source={{ uri: image }} style={styles.preview} />
-        ) : (
-          <Image 
-            source={require('../assets/upload.png')} 
-            style={styles.icon} 
-          />
-        )}
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.uploadCircle} onPress={pickImage}>
+          {image ? (
+            <Image source={{ uri: image }} style={styles.preview} />
+          ) : (
+            <Image
+              source={require('../assets/upload.png')}
+              style={styles.icon}
+            />
+          )}
+        </TouchableOpacity>
 
-      <Text style={styles.uploadText}>Adicione uma imagem</Text>
+        <Text style={styles.uploadText}>Adicione uma imagem</Text>
+      </View>
 
       <View style={{ width: '100%' }}>
         <LabeledInput
@@ -93,15 +96,14 @@ export default function LocationDetailsScreen({ route, navigation }: Props) {
         <AppButton title="Voltar" variant="secondary" onPress={() => navigation.goBack()} />
       </View>
 
-    </View>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    padding: 24,
-    flex: 1,
     alignItems: 'center',
+    gap: 12,
     justifyContent: 'space-between',
   },
 
