@@ -11,6 +11,7 @@ import { spacing } from '../theme/spacing';
 import { ProductStackParamList } from '../navigation/RootNavigator';
 import AppSearchBar from '../components/atoms/AppSearchBar.tsx';
 import { getProducts } from '../services/products.service.ts';
+import { useAuth } from '../context/AuthContext.tsx';
 
 type Props = NativeStackScreenProps<ProductStackParamList, 'ProductList'>;
 
@@ -19,6 +20,8 @@ type Restaurant = { id: string; name: string; products: Product[] };
 export default function ProductsListScreen({ navigation }: Props) {
   const [query, setQuery] = useState('');
   const [restaurantProducts, setRestaurantProducts] = useState<Restaurant[]>([]);
+  const { user } = useAuth();
+  const isLocation = user?.userType === 'location';
 
   const list = useMemo(() => {
     if (!query.trim()) return restaurantProducts;
@@ -89,9 +92,14 @@ export default function ProductsListScreen({ navigation }: Props) {
         )}
       />
 
-      <FloatButton position="bottom-right" onPress={() => navigation.navigate('RegisterProduct')}>
-        <AppIcon name="plus" size={24} />
-      </FloatButton>
+      {isLocation && (
+        <FloatButton
+          position="bottom-right"
+          onPress={() => navigation.navigate('RegisterProduct')}
+        >
+          <AppIcon name="plus" size={24} />
+        </FloatButton>
+      )}
     </SafeAreaView>
   );
 }

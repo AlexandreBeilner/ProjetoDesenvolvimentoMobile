@@ -1,7 +1,5 @@
-import {WIFI_IP} from '@env'
-
-const VIA_USB_REVERSE = false;
-const VIA_WIFI       = true;
+const VIA_USB_REVERSE = true;
+const VIA_WIFI       = false;
 const EMULATOR_ADB   = false;
 
 export const API_URL =

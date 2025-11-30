@@ -5,55 +5,67 @@ import AppButton from '../atoms/AppButton';
 import { spacing } from '../../theme/spacing';
 
 interface Props {
-  onSubmit?: (data: { email: string; password: string, name: string }) => void;
+  onSubmit?: (data: { name: string; email: string; password: string }) => void;
   submitText?: string;
   variant?: 'purple' | 'yellow';
 }
 
 export default function RegisterForm({
-                                   onSubmit,
-                                   submitText = 'Criar conta',
-                                   variant = 'purple',
-                                 }: Props) {
+                                       onSubmit,
+                                       submitText = 'Criar conta',
+                                       variant = 'purple',
+                                     }: Props) {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
 
   function handleSubmit() {
-    onSubmit?.({ email: email.trim(), password, name: name.trim() });
+    const trimmedName = name.trim();
+    const trimmedEmail = email.trim();
+
+    if (!onSubmit) {
+      return;
+    }
+
+    if (!trimmedName || !trimmedEmail || !password) {
+      return;
+    }
+
+    onSubmit({ name: trimmedName, email: trimmedEmail, password });
   }
 
   return (
     <View style={styles.root}>
-      <View>
+      <View style={{ gap: spacing.md }}>
         <LabeledInput
           label="Nome"
-          placeholder="Seu nome"
+          placeholder="Seu nome completo"
           value={name}
           onChangeText={setName}
-          keyboardType="default"
         />
-        <View style={{ height: spacing.md }} />
+
         <LabeledInput
-          label="Email"
-          placeholder="seu@email.com"
+          label="E-mail"
+          placeholder="seuemail@exemplo.com"
           value={email}
-          onChangeText={setEmail}
           keyboardType="email-address"
+          onChangeText={setEmail}
         />
-        <View style={{ height: spacing.md }} />
+
         <LabeledInput
           label="Senha"
-          placeholder="••••••••"
+          placeholder="Crie uma senha"
           value={password}
-          onChangeText={setPassword}
           secureTextEntry
+          onChangeText={setPassword}
         />
       </View>
+
       <AppButton
         title={submitText}
         variant={variant === 'yellow' ? 'secondary' : 'primary'}
         onPress={handleSubmit}
+        full
       />
     </View>
   );

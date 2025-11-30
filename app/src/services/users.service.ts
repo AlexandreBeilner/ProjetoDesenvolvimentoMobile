@@ -5,9 +5,16 @@ import { API_URL } from './index';
 export async function registerUser(data: any) {
   const url = `${API_URL}/users`;
 
-  console.log("📡 registerUser ->", url, data);
+  const res = await axios.post(url, data);
+  return res.data;
+}
 
-  return axios.post(url, data);
+// autentica usuário existente
+export async function loginUser(credentials: { email: string; password: string }) {
+  const url = `${API_URL}/auth/login`;
+
+  const res = await axios.post(url, credentials);
+  return res.data;
 }
 
 // pega apenas usuários do tipo "location"

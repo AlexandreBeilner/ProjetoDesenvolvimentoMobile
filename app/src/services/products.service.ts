@@ -2,7 +2,7 @@ import { API_URL } from './index.ts';
 
 export const getProducts = async () => {
   try {
-    const response = await fetch(`${API_URL}/api/products`);
+    const response = await fetch(`${API_URL}/products`);
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
@@ -21,7 +21,7 @@ export const createProduct = async (productData: {
   image: string | null;
   userId: string;
 }) => {
-  const response = await fetch(`${API_URL}/api/products`, {
+  const response = await fetch(`${API_URL}/products`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

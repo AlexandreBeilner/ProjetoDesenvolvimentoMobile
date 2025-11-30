@@ -19,34 +19,43 @@ export default function AuthForm({
   const [password, setPassword] = useState('');
 
   function handleSubmit() {
-    onSubmit?.({ email: email.trim(), password });
+    const trimmedEmail = email.trim();
+
+    if (!onSubmit) {
+      return;
+    }
+
+    if (!trimmedEmail || !password) {
+      return;
+    }
+
+    onSubmit({ email: trimmedEmail, password });
   }
 
   return (
     <View style={styles.root}>
-      <View>
-        
-
+      <View style={{ gap: spacing.md }}>
         <LabeledInput
-          label="Email"
-          placeholder="seu@email.com"
+          label="E-mail"
+          placeholder="seuemail@exemplo.com"
           value={email}
-          onChangeText={setEmail}
           keyboardType="email-address"
+          onChangeText={setEmail}
         />
-        <View style={{ height: spacing.md }} />
         <LabeledInput
           label="Senha"
-          placeholder="••••••••"
+          placeholder="Digite sua senha"
           value={password}
-          onChangeText={setPassword}
           secureTextEntry
+          onChangeText={setPassword}
         />
       </View>
+
       <AppButton
         title={submitText}
         variant={variant === 'yellow' ? 'secondary' : 'primary'}
         onPress={handleSubmit}
+        full
       />
     </View>
   );
