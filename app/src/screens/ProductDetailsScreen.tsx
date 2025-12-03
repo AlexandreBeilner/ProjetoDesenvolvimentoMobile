@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View, TouchableOpacity } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { colors } from '../theme/colors';
 import { spacing } from '../theme/spacing';
@@ -19,30 +19,56 @@ export default function ProductDetailsScreen({ navigation, route }: Props) {
   return (
     <Screen paddingHorizontal={0} paddingTop={0} paddingBottom={0}>
       <View style={s.contentContainer}>
-        <Image source={{uri: `data:image/jpeg;base64,${product.image}`}} style={s.image} resizeMode="cover"/>
+        <Image
+          source={{ uri: `data:image/jpeg;base64,${product.image}` }}
+          style={s.image}
+          resizeMode="cover"
+        />
         <AppText style={s.title}>
           {product.title} - {product.price}
         </AppText>
-        <AppText style={s.desc}>
-          {product.description}
-        </AppText>
+        <AppText style={s.desc}>{product.description}</AppText>
       </View>
+
       <View style={s.paymentContainer}>
         <View style={s.amountContainer}>
-          <AppIcon name={'minus'} size={30} onPress={() => {
-            if (count > 0) setCount(count - 1);
-          }}/>
+          <AppIcon
+            name={'minus'}
+            size={30}
+            onPress={() => {
+              if (count > 0) setCount(count - 1);
+            }}
+          />
           <AppText style={s.amountText}>{count}</AppText>
-          <AppIcon name={'plus'} size={30} color={colors.brandPurple} onPress={() => {
-            setCount(count + 1);
-          }}/>
+          <AppIcon
+            name={'plus'}
+            size={30}
+            color={colors.brandPurple}
+            onPress={() => {
+              setCount(count + 1);
+            }}
+          />
         </View>
-        <View style={s.priceContainer}>
-          <AppText style={[s.amountText, {color: colors.white}]}>
+
+        {/* BOTÃO PAGAR FUNCIONANDO */}
+        <TouchableOpacity
+          style={s.priceContainer}
+          onPress={() => {
+            if (count > 0) {
+              navigation.navigate('Payment', {
+                product,
+                count,
+                total: price * count,
+              });
+            }
+          }}
+        >
+          <AppText style={[s.amountText, { color: colors.white }]}>
             Pagar   R$ {price * count}
           </AppText>
-        </View>
+        </TouchableOpacity>
       </View>
+
       <FloatButton position="top-left" onPress={() => navigation.goBack()}>
         <AppIcon name="chevron-left" size={24} />
       </FloatButton>
@@ -57,7 +83,19 @@ const s = StyleSheet.create({
   title: { fontSize: 24, fontWeight: '700', marginTop: spacing.lg, marginHorizontal: spacing.lg },
   desc: { fontSize: 16, marginTop: spacing.md, marginHorizontal: spacing.lg },
   paymentContainer: { flex: 1, flexDirection: 'row' },
-  amountContainer: { width: '40%', flexDirection: "row", alignItems: "center", justifyContent: "center", gap: spacing.xl, backgroundColor: colors.brandYellow},
-  amountText: {fontSize: 18},
-  priceContainer: { width: '60%', alignItems: "center", justifyContent: "center", backgroundColor: colors.brandPurple }
+  amountContainer: {
+    width: '40%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.xl,
+    backgroundColor: colors.brandYellow,
+  },
+  amountText: { fontSize: 18 },
+  priceContainer: {
+    width: '60%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.brandPurple,
+  },
 });

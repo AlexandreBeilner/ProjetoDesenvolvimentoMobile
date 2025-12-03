@@ -15,6 +15,7 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import ProductDetailsScreen from '../screens/ProductDetailsScreen.tsx';
 import { Product } from '../components/molecules/ProductCard.tsx';
 import LocationDetailsScreen from '../screens/LocationDetailsScreen';
+import PaymentScreen from '../screens/PaymentScreen.tsx';
 
 
 enableScreens(true);
@@ -27,7 +28,6 @@ export type RootStackParamList = {
   LocationDetails: { userData: any };
 };
 
-
 export type TabParamList = {
   ProductList: undefined;
   LocalList: undefined;
@@ -36,8 +36,10 @@ export type TabParamList = {
 export type ProductStackParamList = {
   ProductList: undefined;
   RegisterProduct: undefined;
-  ProductDetails: {product: Product};
+  ProductDetails: { product: Product };
+  Payment: { product: Product; count: number; total: number };
 };
+
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -116,7 +118,6 @@ function TabNavigation() {
         }}
       />
 
-
       <Tab.Screen
         name="LocalList"
         component={LocalsListScreen}
@@ -138,6 +139,7 @@ function ProductsStackNavigator() {
       <ProductsStack.Screen name="ProductList" component={ProductsListScreen} />
       <ProductsStack.Screen name="RegisterProduct" component={RegisterProduct} />
       <ProductsStack.Screen name="ProductDetails" component={ProductDetailsScreen} />
+      <ProductsStack.Screen name="Payment" component={PaymentScreen} />
     </ProductsStack.Navigator>
   );
 }
