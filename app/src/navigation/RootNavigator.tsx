@@ -16,6 +16,7 @@ import ProductDetailsScreen from '../screens/ProductDetailsScreen.tsx';
 import { Product } from '../components/molecules/ProductCard.tsx';
 import LocationDetailsScreen from '../screens/LocationDetailsScreen';
 import PaymentScreen from '../screens/PaymentScreen.tsx';
+import ProfileScreen from '../screens/ProfileScreen.tsx';
 
 
 enableScreens(true);
@@ -38,6 +39,7 @@ export type ProductStackParamList = {
   RegisterProduct: undefined;
   ProductDetails: { product: Product };
   Payment: { product: Product; count: number; total: number };
+  Profile: undefined;
 };
 
 
@@ -140,6 +142,7 @@ function ProductsStackNavigator() {
       <ProductsStack.Screen name="RegisterProduct" component={RegisterProduct} />
       <ProductsStack.Screen name="ProductDetails" component={ProductDetailsScreen} />
       <ProductsStack.Screen name="Payment" component={PaymentScreen} />
+      <ProductsStack.Screen name="Profile" component={ProfileScreen} />
     </ProductsStack.Navigator>
   );
 }

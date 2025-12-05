@@ -5,6 +5,9 @@ export type UserType = 'consumer' | 'location';
 export type AuthUser = {
   id: number;
   name: string;
+  title: string;
+  description: string;
+  image: string;
   email: string;
   userType: UserType;
 };

@@ -1,6 +1,6 @@
 const VIA_USB_REVERSE = false;
-const VIA_WIFI       = true;
-const EMULATOR_ADB   = false;
+const VIA_WIFI       = false;
+const EMULATOR_ADB   = true;
 
 export const API_URL =
   VIA_USB_REVERSE ? 'http://localhost:3000/api' :

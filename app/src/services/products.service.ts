@@ -31,3 +31,21 @@ export const createProduct = async (productData: {
 
   return await response.json();
 };
+
+export const updateProduct = async () => {
+
+}
+
+export const getByUserId = async (userId: number) => {
+  try {
+    const response = await fetch(`${API_URL}/products/user/${userId}/list`);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    throw error;
+  }
+}

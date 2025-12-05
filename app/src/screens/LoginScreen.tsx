@@ -33,6 +33,7 @@ export default function LoginScreen({ navigation }: Props) {
         name: logged.name,
         email: logged.email,
         userType: logged.userType,
+        ...logged
       });
 
       // só passa para o Feed se o login deu certo

@@ -12,6 +12,7 @@ import { ProductStackParamList } from '../navigation/RootNavigator';
 import AppSearchBar from '../components/atoms/AppSearchBar.tsx';
 import { getProducts } from '../services/products.service.ts';
 import { useAuth } from '../context/AuthContext.tsx';
+import { HeaderScreen } from '../components/molecules/HeaderScreen.tsx';
 
 type Props = NativeStackScreenProps<ProductStackParamList, 'ProductList'>;
 
@@ -75,11 +76,9 @@ export default function ProductsListScreen({ navigation }: Props) {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={s.content}
         ListHeaderComponent={
-          <AppSearchBar
-            placeholder="Buscar"
-            containerStyle={{ marginBottom: spacing.lg }}
-            value={query}
-            onChangeText={setQuery}
+          <HeaderScreen
+            query={query}
+            setQuery={setQuery}
           />
         }
         renderItem={({ item }) => (

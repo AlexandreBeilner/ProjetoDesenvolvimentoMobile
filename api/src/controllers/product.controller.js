@@ -12,7 +12,9 @@ export async function createProduct(req, res, next) {
         const user = await User.findByPk(userId);
         if (!user) return res.status(404).json({ error: 'Usuário não encontrado' });
 
-        if (!price || Number.isNaN(price)) return res.status(400).json({ error: 'O preço é invalido' });
+        if (price === undefined || price === null || isNaN(Number(price))) {
+            return res.status(400).json({ error: 'O preço é invalido' });
+        }
 
         const product = await Product.create({
             title,
@@ -92,4 +94,44 @@ export async function getProduct(req, res, next) {
 export async function listProductsByUser(req, res, next) {
     req.query.userId = req.params.userId;
     return listProducts(req, res, next);
+}
+
+export async function updateProduct(req, res, next) {
+    try {
+        const { title, description, price, image, id } = req.body;
+        if (!title) return res.status(400).json({ error: 'Titulo é obrigatório' });
+
+        if (price === undefined || price === null || isNaN(Number(price))) {
+            return res.status(400).json({ error: 'O preço é invalido' });
+        }
+
+        const product = await Product.findByPk(id);
+        if (! product) return res.status(404).json({ error: 'Produto não encontrado' });
+
+        await product.update({
+            title,
+            description: description ?? null,
+            price: Number(price),
+            image: image ?? null,
+        })
+
+        res.status(200).json(product);
+    } catch (e) {
+        next(e);
+    }
+}
+
+export async function deleteProduct(req, res, next) {
+    try {
+        const { id } = req.params;
+
+        const product = await Product.findByPk(id);
+        if (! product) return res.status(404).json({ error: 'Produto não encontrado' });
+
+        await product.destroy();
+
+        res.status(200).json(product);
+    } catch (e) {
+        next(e);
+    }
 }

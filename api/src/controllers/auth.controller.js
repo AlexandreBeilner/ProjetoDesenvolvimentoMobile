@@ -40,6 +40,9 @@ export async function login(req, res, next) {
             name: user.name,
             email: user.email,
             userType: user.userType,
+            image: user.image,
+            title: user.title,
+            description: user.description
         });
     } catch (err) {
         next(err);
