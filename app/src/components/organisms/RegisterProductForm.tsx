@@ -5,24 +5,36 @@ import AppButton from '../atoms/AppButton';
 import { spacing } from '../../theme/spacing';
 
 interface Props {
-  onSubmit?: (data: { title: string; description: string, price: string }) => void;
+  onSubmit?: (data: { title: string; description: string; price: string }) => void;
   onBack: () => void;
   submitText?: string;
   variant?: 'purple' | 'yellow';
+  initialValues?: {
+    title?: string;
+    description?: string | null;
+    price?: string;
+  };
+  onDelete?: () => void
 }
 
 export default function RegisterProductForm({
-                                   onSubmit,
+                                              onSubmit,
                                               onBack,
-                                   submitText = 'Cadastrar produto',
-                                   variant = 'purple',
-                                 }: Props) {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState('');
+                                              onDelete,
+                                              submitText = 'Cadastrar produto',
+                                              variant = 'purple',
+                                              initialValues,
+                                            }: Props) {
+  const [title, setTitle] = useState(initialValues?.title ?? '');
+  const [description, setDescription] = useState(initialValues?.description ?? '');
+  const [price, setPrice] = useState(initialValues?.price ?? '');
 
   function handleSubmit() {
-    onSubmit?.({ title: title.trim(), description: description.trim(), price: price.trim() });
+    onSubmit?.({
+      title: title.trim(),
+      description: description.trim(),
+      price: price.trim(),
+    });
   }
 
   return (
@@ -48,7 +60,7 @@ export default function RegisterProductForm({
           placeholder="R$"
           value={price}
           onChangeText={setPrice}
-          keyboardType={'numeric'}
+          keyboardType="numeric"
         />
       </View>
       <View style={styles.buttonsContainer}>
@@ -62,6 +74,11 @@ export default function RegisterProductForm({
           variant={'secondary'}
           onPress={onBack}
         />
+        {initialValues && <AppButton
+          title={'Deletar'}
+          variant={'delete'}
+          onPress={onDelete}
+        />}
       </View>
     </View>
   );

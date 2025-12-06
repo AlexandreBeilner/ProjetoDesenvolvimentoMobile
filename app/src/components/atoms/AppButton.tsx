@@ -4,7 +4,7 @@ import AppText from './AppText';
 import { colors } from '../../theme/colors';
 import { spacing } from '../../theme/spacing';
 
-type Variant = 'primary' | 'secondary';
+type Variant = 'primary' | 'secondary' | 'delete';
 
 interface Props {
   title: string;
@@ -25,7 +25,11 @@ export default function AppButton({
                                     textStyle,
                                     disabled,
                                   }: Props) {
-  const bg = variant === 'primary' ? colors.brandPurple : colors.brandYellow;
+  const bg = {
+    primary: colors.brandPurple,
+    secondary: colors.brandYellow,
+    delete: colors.brandRed
+  }
   const textColor = colors.white;
 
   return (
@@ -34,7 +38,7 @@ export default function AppButton({
       disabled={disabled}
       style={({ pressed }) => [
         styles.base,
-        { backgroundColor: bg, opacity: pressed ? 0.9 : 1 },
+        { backgroundColor: bg[variant] ?? colors.brandYellow, opacity: pressed ? 0.9 : 1 },
         full && styles.full,
         style,
       ]}

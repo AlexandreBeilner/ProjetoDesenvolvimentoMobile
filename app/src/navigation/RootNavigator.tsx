@@ -17,7 +17,7 @@ import { Product } from '../components/molecules/ProductCard.tsx';
 import LocationDetailsScreen from '../screens/LocationDetailsScreen';
 import PaymentScreen from '../screens/PaymentScreen.tsx';
 import ProfileScreen from '../screens/ProfileScreen.tsx';
-
+import EditProductScreen from '../screens/EditProductScreen.tsx';
 
 enableScreens(true);
 
@@ -40,8 +40,16 @@ export type ProductStackParamList = {
   ProductDetails: { product: Product };
   Payment: { product: Product; count: number; total: number };
   Profile: undefined;
+  EditProduct: {
+    product: {
+      id: number;
+      title: string;
+      description?: string | null;
+      price: string;
+      image?: string | null;
+    };
+  };
 };
-
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -69,7 +77,7 @@ function TabNavigation() {
     <Tab.Navigator
       screenOptions={({ route }) => {
         const rn = getFocusedRouteNameFromRoute(route) ?? '';
-        const hideOn = ['RegisterProduct', 'ProductDetails'];
+        const hideOn = ['RegisterProduct', 'ProductDetails', 'EditProduct'];
         const hide = hideOn.includes(rn);
 
         return {
@@ -82,12 +90,14 @@ function TabNavigation() {
           tabBarActiveTintColor: '#a337a6',
           tabBarInactiveTintColor: '#000000',
 
-          tabBarStyle: hide? {display: 'none'} :{
-            height: 50 + insets.bottom,
-            backgroundColor: '#ffffff',
-            borderTopWidth: 1,
-            borderTopColor: '#000000',
-          },
+          tabBarStyle: hide
+            ? { display: 'none' }
+            : {
+              height: 50 + insets.bottom,
+              backgroundColor: '#ffffff',
+              borderTopWidth: 1,
+              borderTopColor: '#000000',
+            },
 
           tabBarLabelStyle: {
             fontSize: 14,
@@ -132,6 +142,7 @@ function TabNavigation() {
 }
 
 const ProductsStack = createNativeStackNavigator<ProductStackParamList>();
+
 function ProductsStackNavigator() {
   return (
     <ProductsStack.Navigator
@@ -140,6 +151,7 @@ function ProductsStackNavigator() {
     >
       <ProductsStack.Screen name="ProductList" component={ProductsListScreen} />
       <ProductsStack.Screen name="RegisterProduct" component={RegisterProduct} />
+      <ProductsStack.Screen name="EditProduct" component={EditProductScreen} />
       <ProductsStack.Screen name="ProductDetails" component={ProductDetailsScreen} />
       <ProductsStack.Screen name="Payment" component={PaymentScreen} />
       <ProductsStack.Screen name="Profile" component={ProfileScreen} />

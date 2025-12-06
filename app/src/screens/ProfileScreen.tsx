@@ -1,5 +1,7 @@
+// src/screens/ProfileScreen.tsx
+
 import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, View, ScrollView } from 'react-native';
+import { Image, StyleSheet, View, ScrollView, Pressable } from 'react-native';
 import AppText from '../components/atoms/AppText';
 import { colors } from '../theme/colors';
 import { spacing } from '../theme/spacing';
@@ -10,6 +12,7 @@ import { ProductStackParamList } from '../navigation/RootNavigator.tsx';
 import Screen from '../components/templates/Screen.tsx';
 import { AppIcon } from '../components/atoms/AppIcon.tsx';
 import { getByUserId } from '../services/products.service.ts';
+import { useIsFocused } from '@react-navigation/native';
 
 type Props = NativeStackScreenProps<ProductStackParamList, 'Profile'>;
 
@@ -23,16 +26,19 @@ type Product = {
 
 export default function ProfileScreen({ navigation }: Props) {
   const { user } = useAuth();
+  const isFocused = useIsFocused();
 
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    if (user) {
-      getByUserId(user.id).then(response => {
-        setProducts(response.items);
-      });
+    if (!user || !isFocused) {
+      return;
     }
-  }, [user]);
+
+    getByUserId(user.id).then(response => {
+      setProducts(response.items);
+    });
+  }, [user, isFocused]);
 
   return (
     <Screen paddingTop={0} paddingHorizontal={0}>
@@ -66,7 +72,11 @@ export default function ProfileScreen({ navigation }: Props) {
         showsVerticalScrollIndicator={false}
       >
         {products.map(item => (
-          <View key={item.id} style={styles.productCard}>
+          <Pressable
+            key={item.id}
+            style={styles.productCard}
+            onPress={() => navigation.navigate('EditProduct', { product: item })}
+          >
             <View style={styles.productImageContainer}>
               {item.image ? (
                 <Image
@@ -84,7 +94,7 @@ export default function ProfileScreen({ navigation }: Props) {
               ) : null}
               <AppText variant="small">R$ {item.price}</AppText>
             </View>
-          </View>
+          </Pressable>
         ))}
       </ScrollView>
     </Screen>
@@ -118,16 +128,16 @@ const styles = StyleSheet.create({
     marginTop: spacing.lg,
   },
   listContent: {
-    paddingHorizontal: spacing.xl,
-    paddingVertical: spacing.lg,
-    gap: spacing.md,
+    padding: spacing.xl,
+    gap: spacing.lg,
   },
   productCard: {
     flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: spacing.md,
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E5E5',
+    padding: spacing.md,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: colors.white,
     gap: spacing.md,
   },
   productImageContainer: {

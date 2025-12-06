@@ -92,13 +92,26 @@ export async function getProduct(req, res, next) {
 
 /** GET /api/users/:userId/products */
 export async function listProductsByUser(req, res, next) {
-    req.query.userId = req.params.userId;
-    return listProducts(req, res, next);
+    try {
+        const { userId } = req.params;
+        const where = {};
+        if (userId) where.userId = Number(userId);
+
+        const { rows, count } = await Product.findAndCountAll({
+            where,
+            order: [['id', 'DESC']],
+        });
+
+        res.json({ items: rows, total: count });
+    } catch (e) {
+        next(e);
+    }
 }
 
 export async function updateProduct(req, res, next) {
     try {
-        const { title, description, price, image, id } = req.body;
+        const { id } = req.params;
+        const { title, description, price, image } = req.body;
         if (!title) return res.status(400).json({ error: 'Titulo é obrigatório' });
 
         if (price === undefined || price === null || isNaN(Number(price))) {

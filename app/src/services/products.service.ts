@@ -32,9 +32,38 @@ export const createProduct = async (productData: {
   return await response.json();
 };
 
-export const updateProduct = async () => {
+export const updateProduct = async (
+  id: number,
+  productData: {
+    title: string;
+    description: string;
+    price: string;
+    image: string | null;
+  },
+) => {
+  const response = await fetch(`${API_URL}/products/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(productData),
+  });
 
-}
+  return await response.json();
+};
+
+export const deleteProduct = async (
+  id: number,
+) => {
+  const response = await fetch(`${API_URL}/products/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  return await response.json();
+};
 
 export const getByUserId = async (userId: number) => {
   try {

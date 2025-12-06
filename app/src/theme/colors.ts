@@ -6,6 +6,7 @@ export const colors = {
 
   brandPurple: '#7C3AED',
   brandYellow: '#FBBF24',
+  brandRed: '#fb2424',
 
   white: '#FFFFFF',
   black: '#000000',
