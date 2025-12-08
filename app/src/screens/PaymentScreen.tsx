@@ -80,53 +80,53 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     paddingHorizontal: 25,
-    paddingTop: 40,
+    paddingTop: 60,           // espaçamento maior do topo
   },
 
   title: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: "bold",
-    marginBottom: spacing.lg,
+    marginBottom: 25,         // mais espaço abaixo do título
   },
 
   paymentBox: {
     backgroundColor: "#E3E3E3",
-    padding: 12,
+    padding: 15,
     borderRadius: 15,
+    gap: 12,                  // espaçamento entre opções
+    marginBottom: 100,         // espaço maior antes do resumo
   },
 
   option: {
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#6F6F6F",
-    padding: 14,
+    paddingVertical: 14,
+    paddingHorizontal: 12,
     borderRadius: 12,
-    marginBottom: 12,
-  },
-
-  optionSelected: {
-    backgroundColor: "#4d4d4d",
   },
 
   icon: {
     width: 32,
     height: 32,
-    marginRight: 12,
+    marginRight: 14,
   },
 
   optionText: {
     color: "#fff",
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: "600",
   },
 
   summary: {
-    marginTop: 25,
+    marginTop: 10,
+    marginBottom: 150,         // mais espaçamento do botão
   },
 
   row: {
     flexDirection: "row",
     justifyContent: "space-between",
+    marginBottom: 15,
   },
 
   summaryLabel: {
@@ -140,22 +140,23 @@ const styles = StyleSheet.create({
   },
 
   detail: {
-    marginTop: 4,
+    marginTop: 6,
     fontSize: 16,
     fontWeight: "600",
   },
 
   detailItem: {
     fontSize: 16,
-    marginTop: 2,
+    marginTop: 4,
   },
 
   button: {
     backgroundColor: "#A020F0",
-    padding: 15,
+    paddingVertical: 16,
+    paddingHorizontal: 10,
     borderRadius: 12,
     alignItems: "center",
-    marginTop: 40,
+    marginBottom: 400,         // afasta mais do footer
   },
 
   buttonText: {
@@ -166,7 +167,7 @@ const styles = StyleSheet.create({
 
   backBtn: {
     position: "absolute",
-    top: 15,
+    top: 20,
     left: 10,
     padding: 10,
   },

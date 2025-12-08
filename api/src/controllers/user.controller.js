@@ -113,3 +113,106 @@ export async function createUser(req, res, next) {
         next(err);
     }
 }
+
+
+/**
+ * PUT /api/users/:id
+ * Edita usuário
+ */
+export async function updateUser(req, res, next) {
+    try {
+        const { id } = req.params;
+
+        const {
+            name,
+            email,
+            password,
+            userType,
+            title,
+            description,
+            rating,
+            image,
+        } = req.body ?? {};
+
+        const user = await User.findByPk(id);
+
+        if (!user) {
+            return res.status(404).json({ error: 'Usuário não encontrado' });
+        }
+
+        // Se e-mail foi enviado, verificar duplicidade
+        if (email && email !== user.email) {
+            const exists = await User.findOne({
+                where: { email: email.toLowerCase() },
+            });
+
+            if (exists) {
+                return res
+                    .status(409)
+                    .json({ error: 'Já existe um usuário com esse e-mail' });
+            }
+
+            user.email = email.toLowerCase();
+        }
+
+        if (password) {
+            const passwordHash = crypto
+                .createHash('sha256')
+                .update(password)
+                .digest('hex');
+
+            user.passwordHash = passwordHash;
+        }
+
+        if (name) user.name = name;
+        if (title !== undefined) user.title = title;
+        if (description !== undefined) user.description = description;
+        if (rating !== undefined) user.rating = rating;
+        if (image !== undefined) user.image = image;
+
+        if (userType && ['consumer', 'location'].includes(userType)) {
+            user.userType = userType;
+        }
+
+        await user.save();
+
+        res.json({
+            message: 'Usuário atualizado com sucesso',
+            user: {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                userType: user.userType,
+                title: user.title,
+                description: user.description,
+                rating: user.rating,
+                image: user.image,
+            },
+        });
+    } catch (err) {
+        next(err);
+    }
+}
+
+
+/**
+ * DELETE /api/users/:id
+ * Remove usuário definitivamente
+ */
+export async function deleteUser(req, res, next) {
+    try {
+        const { id } = req.params;
+
+        const user = await User.findByPk(id);
+
+        if (!user) {
+            return res.status(404).json({ error: 'Usuário não encontrado' });
+        }
+
+        await user.destroy();
+
+        res.json({ message: 'Usuário removido com sucesso' });
+    } catch (err) {
+        next(err);
+    }
+}
