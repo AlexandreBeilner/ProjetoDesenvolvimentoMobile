@@ -18,6 +18,8 @@ import LocationDetailsScreen from '../screens/LocationDetailsScreen';
 import PaymentScreen from '../screens/PaymentScreen.tsx';
 import ProfileScreen from '../screens/ProfileScreen.tsx';
 import EditProductScreen from '../screens/EditProductScreen.tsx';
+import QrCodeScreen from '../screens/QrCodeScreen.tsx';
+
 
 enableScreens(true);
 
