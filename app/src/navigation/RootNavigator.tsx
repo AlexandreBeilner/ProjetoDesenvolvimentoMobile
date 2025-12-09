@@ -66,6 +66,7 @@ export default function RootNavigator() {
       <Stack.Screen name="Register" component={RegisterScreen} />
       <Stack.Screen name="Feed" component={TabNavigation} />
       <Stack.Screen name="LocationDetails" component={LocationDetailsScreen} />
+      <Stack.Screen name="QRCodeScreen" component={QrCodeScreen} options={{ headerShown: false }}/>
     </Stack.Navigator>
   );
 }
