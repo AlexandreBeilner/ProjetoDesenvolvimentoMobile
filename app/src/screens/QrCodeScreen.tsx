@@ -1,23 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import { Image, Text, TouchableOpacity, StyleSheet, View, ScrollView, Pressable } from 'react-native';
-import AppText from '../components/atoms/AppText';
-import { colors } from '../theme/colors';
-import { spacing } from '../theme/spacing';
-import { useAuth } from '../context/AuthContext.tsx';
-import { FloatButton } from '../components/atoms/FloatButton.tsx';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { ProductStackParamList } from '../navigation/RootNavigator.tsx';
-import Screen from '../components/templates/Screen.tsx';
-import { AppIcon } from '../components/atoms/AppIcon.tsx';
-import { getByUserId } from '../services/products.service.ts';
-import { useIsFocused } from '@react-navigation/native';
+import React from 'react';
+import { Image, Text, TouchableOpacity, StyleSheet, View } from 'react-native';
+import { AppIcon } from '../components/atoms/AppIcon';
 
+export default function QrCodeScreen({ navigation, route }) {
+  const { method } = route.params;
 
-
-export default function QrCodeScreen({ navigation }) {
   return (
     <View style={styles.container}>
-      <Text style={styles.titulo}>Pagamento via QR Code</Text>
+
+      {/* Botão de voltar circular */}
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => navigation.goBack()}
+      >
+        <View style={styles.backButtonInner}>
+          <AppIcon name="chevron-left" size={28} color="#000" />
+        </View>
+      </TouchableOpacity>
+
+      {/* Título atualizado */}
+      <Text style={styles.titulo}>
+        QR Code para retirada do pedido
+      </Text>
+
+      <Text style={styles.metodo}>
+        Método escolhido: {method}
+      </Text>
 
       <Image
         source={require("../assets/qr.png")}
@@ -25,9 +33,6 @@ export default function QrCodeScreen({ navigation }) {
         resizeMode="contain"
       />
 
-      <TouchableOpacity style={styles.botaoVoltar} onPress={() => navigation.goBack()}>
-        <Text style={styles.textoVoltar}>Voltar</Text>
-      </TouchableOpacity>
     </View>
   );
 }
@@ -38,19 +43,54 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#fff",
+    paddingTop: 60,
   },
+
+  backButton: {
+    position: "absolute",
+    top: 40,
+    left: 20,
+    zIndex: 10,
+  },
+
+  backButtonInner: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: "#FFC107",
+    justifyContent: "center",
+    alignItems: "center",
+    elevation: 5,
+    shadowColor: "#000",
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 3,
+  },
+
   titulo: {
-    fontSize: 24,
+    fontSize: 22,
     marginBottom: 20,
+    fontWeight: "700",
+    textAlign: "center",
+    paddingHorizontal: 20,
   },
+
+  metodo: {
+    marginBottom: 15,
+    fontSize: 16,
+    color: "#444",
+  },
+
   qrImagem: {
     width: 260,
     height: 260,
     marginBottom: 40,
   },
+
   botaoVoltar: {
     padding: 12,
   },
+
   textoVoltar: {
     color: "#0066ff",
     fontSize: 16,

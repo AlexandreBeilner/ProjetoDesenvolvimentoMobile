@@ -53,14 +53,16 @@ export default function PaymentScreen({ navigation, route }: Props) {
       </View>
 
         <TouchableOpacity
-         style={styles.button}
-        disabled={!selected}
-        onPress={() => {
-        navigation.navigate("QRCodeScreen", { method: selected, // opcional: envia método escolhido });
-        }}
-        >
-        <Text style={styles.buttonText}>Confirmar</Text>
-      </TouchableOpacity>
+  style={styles.button}
+  disabled={!selected}
+  onPress={() =>
+    navigation.navigate("QRCodeScreen", {
+      method: selected,
+    })
+  }
+>
+  <Text style={styles.buttonText}>Confirmar</Text>
+</TouchableOpacity>
 
       {/* Botão voltar */}
       <TouchableOpacity
