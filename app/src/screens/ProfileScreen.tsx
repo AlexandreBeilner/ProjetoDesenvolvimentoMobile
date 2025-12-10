@@ -39,9 +39,10 @@ export default function ProfileScreen({ navigation }: Props) {
       setProducts(response.items);
     });
   }, [user, isFocused]);
+  
 
   return (
-    <Screen paddingTop={0} paddingHorizontal={0}>
+  <Screen paddingTop={0} paddingHorizontal={0}>
       <View style={styles.content}>
         <View style={styles.profileImageContainer}>
           <Image
@@ -53,16 +54,28 @@ export default function ProfileScreen({ navigation }: Props) {
             style={styles.profileImage}
           />
         </View>
+
         <AppText variant="h1">{user?.title}</AppText>
         <AppText>{user?.description}</AppText>
       </View>
 
+      {/* Botão de voltar */}
       <FloatButton
         backgroundColor={colors.brandPurple}
         position="top-left"
         onPress={() => navigation.goBack()}
       >
         <AppIcon name="chevron-left" size={24} />
+      </FloatButton>
+
+      {/* Botão de EDITAR PERFIL */}
+      <FloatButton
+        backgroundColor={colors.brandPurple}
+        position="top-right"
+        offsetTop={90}
+        onPress={() => navigation.navigate("EditLocation")}
+      >
+        <AppIcon name="pencil" size={22} color="white" />
       </FloatButton>
 
       <View style={styles.divider} />
@@ -75,7 +88,9 @@ export default function ProfileScreen({ navigation }: Props) {
           <Pressable
             key={item.id}
             style={styles.productCard}
-            onPress={() => navigation.navigate('EditProduct', { product: item })}
+            onPress={() =>
+              navigation.navigate('EditProduct', { product: item })
+            }
           >
             <View style={styles.productImageContainer}>
               {item.image ? (
@@ -98,7 +113,8 @@ export default function ProfileScreen({ navigation }: Props) {
         ))}
       </ScrollView>
     </Screen>
-  );
+);
+
 }
 
 const styles = StyleSheet.create({

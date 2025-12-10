@@ -19,6 +19,8 @@ import PaymentScreen from '../screens/PaymentScreen.tsx';
 import ProfileScreen from '../screens/ProfileScreen.tsx';
 import EditProductScreen from '../screens/EditProductScreen.tsx';
 import QrCodeScreen from '../screens/QrCodeScreen.tsx';
+import EditLocationScreen from "../screens/EditLocationScreen";
+
 
 
 enableScreens(true);
@@ -66,7 +68,6 @@ export default function RootNavigator() {
       <Stack.Screen name="Register" component={RegisterScreen} />
       <Stack.Screen name="Feed" component={TabNavigation} />
       <Stack.Screen name="LocationDetails" component={LocationDetailsScreen} />
-      <Stack.Screen name="QRCodeScreen" component={QrCodeScreen} options={{ headerShown: false }}/>
     </Stack.Navigator>
   );
 }
@@ -158,6 +159,11 @@ function ProductsStackNavigator() {
       <ProductsStack.Screen name="ProductDetails" component={ProductDetailsScreen} />
       <ProductsStack.Screen name="Payment" component={PaymentScreen} />
       <ProductsStack.Screen name="Profile" component={ProfileScreen} />
+      <ProductsStack.Screen name="QRCodeScreen" component={QrCodeScreen} />
+      <ProductsStack.Screen name="EditLocation" component={EditLocationScreen} />
+
+
+
     </ProductsStack.Navigator>
   );
 }
